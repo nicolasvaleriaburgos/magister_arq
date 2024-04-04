@@ -1,0 +1,49 @@
+server:
+  port: 8202
+  servlet:
+    context-path: /auth
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8200
+  devtools:
+    livereload:
+      enabled: true
+  application:
+    name: auth-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # ddl-auto: create-drop
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5455/postgres
+    username: root
+    password: 123456Pw
+eureka:
+  instance:
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 30
+    health-check-url-path: /actuator/health
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8201/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+    actuator:
+      show-details: ALWAYS
+#App Properties
+cdc:
+  app:
+    jwtSecret: app-cdc-backend
+    jwtExpirationMs: 300000
+    jwtRefreshExpirationMs: 120000

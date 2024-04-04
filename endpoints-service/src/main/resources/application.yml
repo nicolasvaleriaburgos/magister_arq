@@ -1,0 +1,50 @@
+server:
+  port: 8204
+spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8200
+  devtools:
+    livereload:
+      enabled: true
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery.locator.enabled: true
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+      routes:
+        - id: users-service-id
+          uri: lb://users-service
+          predicates: Path=/users/**
+          filters:
+            - AuthFilter
+        - id: auth-services-id
+          uri: lb://auth-service:8202
+          predicates: Path=/auth/**
+eureka:
+  instance:
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 30
+    health-check-url-path: /actuator/health
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8201/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,0 +1,36 @@
+server:
+  port: 8203
+  servlet:
+    context-path: /context
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  boot:
+    admin:
+      client:
+        url: http://localhost:8200
+  devtools:
+    livereload:
+      enabled: false
+  application:
+    name: context-service
+eureka:
+  instance:
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 30
+    health-check-url-path: /actuator/health
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8201/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+#App Properties

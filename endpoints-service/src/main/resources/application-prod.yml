@@ -1,0 +1,36 @@
+server:
+  port: 8204
+spring:
+  devtools:
+    livereload:
+      enabled: false
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery.locator.enabled: true
+      routes:
+        - id: users-service-id
+          uri: lb://users-service
+          predicates: Path=/users/**
+          filters:
+            - AuthFilter
+        - id: auth-services-id
+          uri: lb://auth-service
+          predicates: Path=/auth/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discover-service:8201/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+swagger:
+  docs:
+    title: Gateway Services Microservice
+    description: Micro servicio de Gateway de los servicios
+    version: 1.0.0
+    terms: Product by Ubo
